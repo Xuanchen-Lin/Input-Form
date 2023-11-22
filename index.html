@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Form</title>
+</head>
+<body>
+
+  <h1>Input Form</h1>
+
+  <form id="Input Form">
+    <label for="inputField">Input:</label>
+    <input type="text" id="inputField" name="input" required>
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
+  <div id="outputResult"></div>
+
+  <script>
+    async function submitForm() {
+      const inputField = document.getElementById('inputField');
+      const inputValue = inputField.value;
+
+      try {
+        const response = await fetch('http://localhost:3000/process', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ input: inputValue })
+        });
+
+        const result = await response.json();
+        displayOutput(result.output);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    }
+
+    function displayOutput(output) {
+      const outputResult = document.getElementById('outputResult');
+      outputResult.textContent = 'Output: ' + output;
+    }
+  </script>
+
+</body>
+</html>
